@@ -41,7 +41,13 @@ class TestCount
 function testValue(actual, expected)
 {
 	var fEpsilon = 1.0e-7;
-	if (expected != 0.0)
+	if (actual == expected)
+		return true;
+	else if (actual == null && expected != null)
+		return false;
+	else if (actual == undefined && expected != undefined)
+		return false;
+	else if (expected != 0.0)
 		return Math.abs((actual - expected) / expected) < fEpsilon;
 	else
 		return Math.abs(actual) < fEpsilon;
