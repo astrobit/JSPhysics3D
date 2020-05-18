@@ -17,14 +17,14 @@ function testAndReportThreeVector(bSilent_Pass, i_psTest, i_cVect, i_fX, i_fY, i
 	}
 	if (bPrint)
 	{
-		console.log(sSuccess + ":  " + i_psTest + ": x=" + i_cVect.x + " (" + i_fX + ") y=" + i_cVect.y + " (" + i_fY + ") z=" + i_cVect.z + " (" + i_fZ + ")");
+		displayMessage(sSuccess + ":  " + i_psTest + ": x=" + i_cVect.x + " (" + i_fX + ") y=" + i_cVect.y + " (" + i_fY + ") z=" + i_cVect.z + " (" + i_fZ + ")");
 	}
 	return new TestCount(1,iRet);
 }
 
 function printThreeVector(i_cVect)
 {
-	console.log("<" + i_cVect.x + ", " + i_cVect.y + ", " + i_cVect.z + ">");
+	displayMessage("<" + i_cVect.x + ", " + i_cVect.y + ", " + i_cVect.z + ">");
 }
 
 

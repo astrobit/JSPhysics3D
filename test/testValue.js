@@ -1,4 +1,12 @@
 var bSilent_Pass = true;
+function displayMessage(message)
+{
+	var pElem = document.createElement("p");
+	pElem.insertAdjacentText("beforeend",message);
+	document.body.appendChild(pElem);
+	console.log(message);	
+}
+
 class TestCount
 {
 	constructor(count, failures)
@@ -26,7 +34,7 @@ class TestCount
 	
 	report(type)
 	{
-		console.log(type + " PASS: " + (this._count - this._failures) + " FAIL: " + this._failures);	
+		displayMessage(type + " PASS: " + (this._count - this._failures) + " FAIL: " + this._failures);
 	}
 }
 
@@ -52,7 +60,7 @@ function testValueAndReport(bSilent_Pass, i_psTest, actual, expected)
 	}
 	if (bPrint)
 	{
-		console.log(sSuccess + ": " + i_psTest + ":  s = " + actual + " (" + expected + ")");
+		displayMessage(message = sSuccess + ": " + i_psTest + ":  s = " + actual + " (" + expected + ")");
 	}
 	return new TestCount(1,iRet);
 }
