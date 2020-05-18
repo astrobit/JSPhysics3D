@@ -69,52 +69,17 @@ mIdent.loadIdentity();
 var mZero = new FourMatrix();
 mZero.loadZero();
 
-var i,j;
-
 for (i = 0; i < 16; i++)
 {
-	var letter;
-	if (i == 0)
-		letter = 'a';
-	else if (i == 1)
-		letter = 'b';
-	else if (i == 2)
-		letter = 'c';
-	else if (i == 3)
-		letter = 'd';
-	else if (i == 4)
-		letter = 'e';
-	else if (i == 5)
-		letter = 'f';
-	else if (i == 6)
-		letter = 'g';
-	else if (i == 7)
-		letter = 'h';
-	else if (i == 8)
-		letter = 'i';
-	else if (i == 9)
-		letter = 'j';
-	else if (i == 10)
-		letter = 'k';
-	else if (i == 11)
-		letter = 'l';
-	else if (i == 12)
-		letter = 'm';
-	else if (i == 13)
-		letter = 'n';
-	else if (i == 14)
-		letter = 'o';
-	else if (i == 15)
-		letter = 'p';
-		
+	var letter = nToLetter(i);		
 	for (j = 0; j < 16; j++)
 	{
 		var row = Math.floor(j / 4);
 		var col = j % 4;
 		if (i == j)
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,letter + "(" + row + "," + col + ") = 1",mSet[i].at(row,col),1.0));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,letter + "(" + row + "," + col + ")",mSet[i].at(row,col),1.0));
 		else
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,letter + "(" + row + "," + col + ") = 0",mSet[i].at(row,col),0.0));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,letter + "(" + row + "," + col + ")",mSet[i].at(row,col),0.0));
 	}
 }
 
@@ -123,138 +88,74 @@ for (j = 0; j < 16; j++)
 	var row = Math.floor(j / 4);
 	var col = j % 4;
 	if (row == col)
-		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"I(" + row + "," + col + ") = 1",mIdent.at(row,col),1.0));
+		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"I(" + row + "," + col + ")",mIdent.at(row,col),1.0));
 	else
-		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"I(" + row + "," + col + ") = 0",mIdent.at(row,col),0.0));
+		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"I(" + row + "," + col + ")",mIdent.at(row,col),0.0));
 }
 
 for (j = 0; j < 16; j++)
 {
 	var row = Math.floor(j / 4);
 	var col = j % 4;
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"0(" + row + "," + col + ") = 0",mZero.at(row,col),0.0));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"0(" + row + "," + col + ")",mZero.at(row,col),0.0));
 }
 
 for (j = 0; j < 16; j++)
 {
 	var row = Math.floor(j / 4);
 	var col = j % 4;
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N(" + row + "," + col + ") = " + (j + 1),mNN.at(row,col),j + 1));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N(" + row + "," + col + ")",mNN.at(row,col),j + 1));
 }
 
 for (j = 0; j < 16; j++)
 {
 	var row = Math.floor(j / 4);
 	var col = j % 4;
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"transpose N(" + row + "," + col + ") = " + mNN.at(col,row),mNN.transpose().at(row,col),mNN.at(col,row)));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"transpose N(" + row + "," + col + ")",mNN.transpose().at(row,col),mNN.at(col,row)));
 }
 
 for (j = 0; j < 16; j++)
 {
 	var row = Math.floor(j / 4);
 	var col = j % 4;
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"-N(" + row + "," + col + ") = " + (-(j + 1)),mNN.negate().at(row,col),-(j + 1)));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"-N(" + row + "," + col + ")",mNN.negate().at(row,col),-(j + 1)));
 }
 
 for (j = 0; j < 16; j++)
 {
 	var row = Math.floor(j / 4);
 	var col = j % 4;
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"2N(" + row + "," + col + ") = " + (2*(j + 1)),mNN.scale(2).at(row,col),2*(j + 1)));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"2N(" + row + "," + col + ")",mNN.scale(2).at(row,col),2*(j + 1)));
 }
 
 for (i = 0; i < 16; i++)
 {
-	var letter;
-	if (i == 0)
-		letter = 'a';
-	else if (i == 1)
-		letter = 'b';
-	else if (i == 2)
-		letter = 'c';
-	else if (i == 3)
-		letter = 'd';
-	else if (i == 4)
-		letter = 'e';
-	else if (i == 5)
-		letter = 'f';
-	else if (i == 6)
-		letter = 'g';
-	else if (i == 7)
-		letter = 'h';
-	else if (i == 8)
-		letter = 'i';
-	else if (i == 9)
-		letter = 'j';
-	else if (i == 10)
-		letter = 'k';
-	else if (i == 11)
-		letter = 'l';
-	else if (i == 12)
-		letter = 'm';
-	else if (i == 13)
-		letter = 'n';
-	else if (i == 14)
-		letter = 'o';
-	else if (i == 15)
-		letter = 'p';
+	var letter = nToLetter(i);		
 		
 	for (j = 0; j < 16; j++)
 	{
 		var row = Math.floor(j / 4);
 		var col = j % 4;
 		if (i == j)
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N + " + letter + ")(" + row + "," + col + ") = " + (2 + j),mNN.add(mSet[i]).at(row,col),2.0 + j));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N + " + letter + ")(" + row + "," + col + ")",mNN.add(mSet[i]).at(row,col),2.0 + j));
 		else
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N + " + letter + ")(" + row + "," + col + ") = " + (1 + j),mNN.add(mSet[i]).at(row,col),1 + j));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N + " + letter + ")(" + row + "," + col + ")",mNN.add(mSet[i]).at(row,col),1 + j));
 	}
 }
 
 
 for (i = 0; i < 16; i++)
 {
-	var letter;
-	if (i == 0)
-		letter = 'a';
-	else if (i == 1)
-		letter = 'b';
-	else if (i == 2)
-		letter = 'c';
-	else if (i == 3)
-		letter = 'd';
-	else if (i == 4)
-		letter = 'e';
-	else if (i == 5)
-		letter = 'f';
-	else if (i == 6)
-		letter = 'g';
-	else if (i == 7)
-		letter = 'h';
-	else if (i == 8)
-		letter = 'i';
-	else if (i == 9)
-		letter = 'j';
-	else if (i == 10)
-		letter = 'k';
-	else if (i == 11)
-		letter = 'l';
-	else if (i == 12)
-		letter = 'm';
-	else if (i == 13)
-		letter = 'n';
-	else if (i == 14)
-		letter = 'o';
-	else if (i == 15)
-		letter = 'p';
+	var letter = nToLetter(i);		
 		
 	for (j = 0; j < 16; j++)
 	{
 		var row = Math.floor(j / 4);
 		var col = j % 4;
 		if (i == j)
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N - " + letter + ")(" + row + "," + col + ") = " + (j),mNN.subtract(mSet[i]).at(row,col),j));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N - " + letter + ")(" + row + "," + col + ")",mNN.subtract(mSet[i]).at(row,col),j));
 		else
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N - " + letter + ")(" + row + "," + col + ") = " + (1 + j),mNN.subtract(mSet[i]).at(row,col),1 + j));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N - " + letter + ")(" + row + "," + col + ")",mNN.subtract(mSet[i]).at(row,col),1 + j));
 	}
 }
 
@@ -262,93 +163,29 @@ for (i = 0; i < 16; i++)
 
 for (i = 0; i < 16; i++)
 {
-	var letter;
-	if (i == 0)
-		letter = 'a';
-	else if (i == 1)
-		letter = 'b';
-	else if (i == 2)
-		letter = 'c';
-	else if (i == 3)
-		letter = 'd';
-	else if (i == 4)
-		letter = 'e';
-	else if (i == 5)
-		letter = 'f';
-	else if (i == 6)
-		letter = 'g';
-	else if (i == 7)
-		letter = 'h';
-	else if (i == 8)
-		letter = 'i';
-	else if (i == 9)
-		letter = 'j';
-	else if (i == 10)
-		letter = 'k';
-	else if (i == 11)
-		letter = 'l';
-	else if (i == 12)
-		letter = 'm';
-	else if (i == 13)
-		letter = 'n';
-	else if (i == 14)
-		letter = 'o';
-	else if (i == 15)
-		letter = 'p';
+	var letter = nToLetter(i);		
 		
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(" + letter + ") = 0",mSet[i].determinant(),0));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(" + letter + ")",mSet[i].determinant(),0));
 }
 
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(rand) = -0.08929531",mRand.determinant(),-0.08929531));
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(N) = 0",mN.determinant(),0));
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(I) = 1",mIdent.determinant(),1));
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(0) = 0",mZero.determinant(),0));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(rand)",mRand.determinant(),-0.08929531));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(N)",mNN.determinant(),0));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(I)",mIdent.determinant(),1));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"det(0)",mZero.determinant(),0));
 
 
 for (i = 0; i < 16; i++)
 {
-	var letter;
-	if (i == 0)
-		letter = 'a';
-	else if (i == 1)
-		letter = 'b';
-	else if (i == 2)
-		letter = 'c';
-	else if (i == 3)
-		letter = 'd';
-	else if (i == 4)
-		letter = 'e';
-	else if (i == 5)
-		letter = 'f';
-	else if (i == 6)
-		letter = 'g';
-	else if (i == 7)
-		letter = 'h';
-	else if (i == 8)
-		letter = 'i';
-	else if (i == 9)
-		letter = 'j';
-	else if (i == 10)
-		letter = 'k';
-	else if (i == 11)
-		letter = 'l';
-	else if (i == 12)
-		letter = 'm';
-	else if (i == 13)
-		letter = 'n';
-	else if (i == 14)
-		letter = 'o';
-	else if (i == 15)
-		letter = 'p';
+	var letter = nToLetter(i);		
 	if (i % 4 == Math.floor(i / 4))		
-		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(" + letter + ") = 1",mSet[i].trace(),1));
+		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(" + letter + ")",mSet[i].trace(),1));
 	else
-		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(" + letter + ") = 0",mSet[i].trace(),0));
+		iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(" + letter + ")",mSet[i].trace(),0));
 }
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(rand) = 34",mRand.trace(),1.905872492));
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(N) = 34",mNN.trace(),34));
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(I) = 4",mIdent.trace(),4));
-iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(0) = 0",mZero.trace(),0));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(rand)",mRand.trace(),1.905872492));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(N)",mNN.trace(),34));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(I)",mIdent.trace(),4));
+iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(0)",mZero.trace(),0));
 
 
 
@@ -364,48 +201,16 @@ for (j = 0; j < 4; j++)
 	else if (j == 3)
 		letter = "vz";
 		
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".t = " + mNN.at(0,j),mNN.dotVector(mvSet[j]).t,mNN.at(0,j)));
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".x = " + mNN.at(1,j),mNN.dotVector(mvSet[j]).x,mNN.at(1,j)));
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".y = " + mNN.at(2,j),mNN.dotVector(mvSet[j]).y,mNN.at(2,j)));
-	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".z = " + mNN.at(3,j),mNN.dotVector(mvSet[j]).z,mNN.at(3,j)));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".t",mNN.dotVector(mvSet[j]).t,mNN.at(0,j)));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".x",mNN.dotVector(mvSet[j]).x,mNN.at(1,j)));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".y",mNN.dotVector(mvSet[j]).y,mNN.at(2,j)));
+	iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"N." + letter + ".z",mNN.dotVector(mvSet[j]).z,mNN.at(3,j)));
 }
 
 
 for (i = 0; i < 16; i++)
 {
-	var letter;
-	if (i == 0)
-		letter = 'a';
-	else if (i == 1)
-		letter = 'b';
-	else if (i == 2)
-		letter = 'c';
-	else if (i == 3)
-		letter = 'd';
-	else if (i == 4)
-		letter = 'e';
-	else if (i == 5)
-		letter = 'f';
-	else if (i == 6)
-		letter = 'g';
-	else if (i == 7)
-		letter = 'h';
-	else if (i == 8)
-		letter = 'i';
-	else if (i == 9)
-		letter = 'j';
-	else if (i == 10)
-		letter = 'k';
-	else if (i == 11)
-		letter = 'l';
-	else if (i == 12)
-		letter = 'm';
-	else if (i == 13)
-		letter = 'n';
-	else if (i == 14)
-		letter = 'o';
-	else if (i == 15)
-		letter = 'p';
+	var letter = nToLetter(i);		
 		
 	var rowi = Math.floor(i / 4);
 	var coli = i % 4;
@@ -416,11 +221,11 @@ for (i = 0; i < 16; i++)
 		var col = j % 4;
 		if (Math.floor(coli) == Math.floor(col))
 		{
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N * " + letter + ")(" + row + "," + col + ") = " + mNN.at(row,rowi),mNN.multiply(mSet[i]).at(row,col),mNN.at(row,rowi)));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N * " + letter + ")(" + row + "," + col + ")", mNN.multiply(mSet[i]).at(row,col),mNN.at(row,rowi)));
 		}
 		else
 		{
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N * " + letter + ")(" + row + "," + col + ") = 0",mNN.multiply(mSet[i]).at(row,col),0));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(N * " + letter + ")(" + row + "," + col + ")", mNN.multiply(mSet[i]).at(row,col),0));
 		}
 	}
 }
@@ -431,7 +236,7 @@ for (i = 0; i < mSetI.length; i++)
 	{
 		for (k =0; k < 4; k++)
 		{
-			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(" + i + ")^(-1)(" + j + "," + k + ") = 0",mSetI[i].invert().at(j,k),mSetI[i].transpose().at(j,k)));
+			iFailuresFourMatrix.addEq(testValueAndReport(bSilent_Pass,"(" + i + ")^(-1)(" + j + "," + k + ")", mSetI[i].invert().at(j,k),mSetI[i].transpose().at(j,k)));
 		}
 	}
 }	
