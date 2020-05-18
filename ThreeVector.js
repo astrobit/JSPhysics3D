@@ -11,9 +11,9 @@ class ThreeVector
 {
 /** 
 ThreeVector constructor
-@param x The imaginary x component
-@param y The imaginary y component
-@param z The imaginary z component
+@param x The x component
+@param y The y component
+@param z The z component
 */
 	constructor(x,y,z)
 	{
