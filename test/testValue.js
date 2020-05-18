@@ -1,4 +1,6 @@
 var bSilent_Pass = true;
+var i,j,k;
+
 function displayMessage(message)
 {
 	var pElem = document.createElement("p");
@@ -69,5 +71,15 @@ function testValueAndReport(bSilent_Pass, i_psTest, actual, expected)
 		displayMessage(message = sSuccess + ": " + i_psTest + ":  s = " + actual + " (" + expected + ")");
 	}
 	return new TestCount(1,iRet);
+}
+
+function nToLetter(n)
+{
+	var letterset = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+	
+	var letter = null;
+	if (n >= 0 && n <= 25)
+		letter = letterset[n];
+	return letter;
 }
 
