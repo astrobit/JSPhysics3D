@@ -12,6 +12,8 @@ var mI = new ThreeMatrix([0,0,0,0,0,0,0,0,1]);
 
 var mSet = [mA,mB,mC,mD,mE,mF,mG,mH,mI];
 
+var mRand = new ThreeMatrix([0.18893418,0.510986168,0.529607806,0.282937897,0.972385316,0.194448,0.78645587,0.703070954,0.165803114]);
+
 var mXYZ = new ThreeMatrix([1,0,0,0,1,0,0,0,1]);
 var mXZY = new ThreeMatrix([1,0,0,0,0,1,0,1,0]);
 var mYXZ = new ThreeMatrix([0,1,0,1,0,0,0,0,1]);
@@ -135,6 +137,7 @@ for (i = 0; i < 9; i++)
 	iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"det(" + letter + ")",mSet[i].determinant(),0));
 }
 
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"det(rand)",mRand.determinant(),-0.240856277));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"det(N)",mNN.determinant(),0));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"det(I)",mIdent.determinant(),1));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"det(0)",mZero.determinant(),0));
@@ -148,6 +151,7 @@ for (i = 0; i < 9; i++)
 	else
 		iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(" + letter + ")",mSet[i].trace(),0));
 }
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(rand)",mRand.trace(),1.32712261));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(N)",mNN.trace(),15));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(I)",mIdent.trace(),3));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(0)",mZero.trace(),0));
@@ -202,6 +206,19 @@ for (i = 0; i < mSetI.length; i++)
 		}
 	}
 }	
+
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(0,0)",mRand.invert().at(0,0),-0.101777594));
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(0,1)",mRand.invert().at(0,1),-1.194192531));
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(0,2)",mRand.invert().at(0,2),1.725604247));
+
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(1,0)",mRand.invert().at(1,0),-0.440149569));
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(1,1)",mRand.invert().at(1,1),1.599241243));
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(1,2)",mRand.invert().at(1,2),-0.469608875));
+
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(2,0)",mRand.invert().at(2,0),2.349171583));
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(2,1)",mRand.invert().at(2,1),-1.116989517));
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(rand)^(-1)(2,2)",mRand.invert().at(2,2),-0.162501351));
+
 
 iFailuresThreeMatrix.report("Three Matrix");
 
