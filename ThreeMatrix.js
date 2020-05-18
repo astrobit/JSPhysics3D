@@ -251,9 +251,9 @@ Get the determinant of the matrix
 */
 	determinant()
 	{
-		return this._data[0][0] * (this._data[1][1] * this.data[2][2] - this._data[1][2] * this._data[2][1]) +
-				this._data[1][0] * (this._data[1][0] * this.data[2][2] - this._data[1][2] * this._data[2][0]) +
-				this._data[2][0] * (this._data[1][0] * this.data[2][1] - this._data[1][1] * this._data[2][0]);
+		return this._data[0][0] * (this._data[1][1] * this._data[2][2] - this._data[1][2] * this._data[2][1]) +
+				this._data[0][1] * (this._data[1][2] * this._data[2][0] - this._data[1][0] * this._data[2][2]) +
+				this._data[0][2] * (this._data[1][0] * this._data[2][1] - this._data[1][1] * this._data[2][0]);
 	}
 	
 /**
@@ -286,6 +286,8 @@ Get the inverse of the matrix
 			ret._data[1][2] = invdet * (this._data[0][2] * this._data[1][0] - this._data[0][0] * this._data[1][2]);
 			ret._data[2][2] = invdet * (this._data[0][0] * this._data[1][1] - this._data[0][1] * this._data[1][0]);
 		}
+		else
+			console.log("ThreeMatrix error: Inverting a zero matrix");
 		return ret;
 	}
 /** 
