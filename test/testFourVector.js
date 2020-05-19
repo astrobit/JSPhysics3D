@@ -122,6 +122,17 @@ iFailuresFourVector.addEq(testAndReportFourVector(bSilent_Pass,"Y / 2",qY.divide
 iFailuresFourVector.addEq(testAndReportFourVector(bSilent_Pass,"Z / 2",qZ.divide(2.0),0,0,0,0.5));
 
 
+qA.loadZero();
+iFailuresFourVector.addEq(testAndReportFourVector(bSilent_Pass,"loadZero",qA,0,0,0,0));
+qA.loadUnitT();
+iFailuresFourVector.addEq(testAndReportFourVector(bSilent_Pass,"loadUnitX",qA,1,0,0,0));
+qA.loadUnitX();
+iFailuresFourVector.addEq(testAndReportFourVector(bSilent_Pass,"loadUnitX",qA,0,1,0,0));
+qA.loadUnitY();
+iFailuresFourVector.addEq(testAndReportFourVector(bSilent_Pass,"loadUnitY",qA,0,0,1,0));
+qA.loadUnitZ();
+iFailuresFourVector.addEq(testAndReportFourVector(bSilent_Pass,"loadUnitZ",qA,0,0,0,1));
+
 
 iFailuresFourVector.report("Four Vector");
 

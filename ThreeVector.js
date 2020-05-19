@@ -145,5 +145,40 @@ Retrieve a unit vector for this vector
 			mag = 1.0 / mag;
 		return new ThreeVector(this._x * mag,this._y * mag,this._z * mag);
 	}
+	/**
+Load the vector with a zero vector
+@returns none
+*/
+	loadZero()
+	{
+		this._x = this._y = this._z = 0.0;
+	}
+/**
+Load the vector with a unit vector in the x direction
+@returns none
+*/
+	loadUnitX()
+	{
+		this._x = 1.0;
+		this._y = this._z = 0.0;
+	}
+/**
+Load the vector with a unit vector in the y direction
+@returns none
+*/
+	loadUnitY()
+	{
+		this._y = 1.0;
+		this._x = this._z = 0.0;
+	}
+/**
+Load the vector with a unit vector in the z direction
+@returns none
+*/
+	loadUnitZ()
+	{
+		this._z = 1.0;
+		this._x = this._y = 0.0;
+	}
 }
 

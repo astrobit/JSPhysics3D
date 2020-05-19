@@ -104,5 +104,15 @@ iFailuresThreeVector.addEq(testAndReportThreeVector(bSilent_Pass,"Y x Z",qY.cros
 iFailuresThreeVector.addEq(testAndReportThreeVector(bSilent_Pass,"Z x X",qZ.cross(qX),0,1,0));
 iFailuresThreeVector.addEq(testAndReportThreeVector(bSilent_Pass,"Z x Y",qZ.cross(qY),-1,0,0));
 
+qA.loadZero();
+iFailuresThreeVector.addEq(testAndReportThreeVector(bSilent_Pass,"loadZero",qA,0,0,0));
+qA.loadUnitX();
+iFailuresThreeVector.addEq(testAndReportThreeVector(bSilent_Pass,"loadUnitX",qA,1,0,0));
+qA.loadUnitY();
+iFailuresThreeVector.addEq(testAndReportThreeVector(bSilent_Pass,"loadUnitY",qA,0,1,0));
+qA.loadUnitZ();
+iFailuresThreeVector.addEq(testAndReportThreeVector(bSilent_Pass,"loadUnitZ",qA,0,0,1));
+
+
 iFailuresThreeVector.report("Three Vector");
 
