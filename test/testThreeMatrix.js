@@ -11,6 +11,7 @@ var mH = new ThreeMatrix([0,0,0,0,0,0,0,1,0]);
 var mI = new ThreeMatrix([0,0,0,0,0,0,0,0,1]);
 
 var mSet = [mA,mB,mC,mD,mE,mF,mG,mH,mI];
+var rank = Math.floor(Math.sqrt(mSet.length));
 
 var mRand = new ThreeMatrix([0.18893418,0.510986168,0.529607806,0.282937897,0.972385316,0.194448,0.78645587,0.703070954,0.165803114]);
 
@@ -37,14 +38,14 @@ mZero.loadZero();
 
 
 
-for (i = 0; i < 9; i++)
+for (i = 0; i < mSet.length; i++)
 {
 	var letter = nToLetter(i);		
 		
-	for (j = 0; j < 9; j++)
+	for (j = 0; j < mSet.length; j++)
 	{
-		var row = Math.floor(j / 3);
-		var col = j % 3;
+		var row = Math.floor(j / rank);
+		var col = j % rank;
 		if (i == j)
 			iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,letter + "(" + row + "," + col + ")",mSet[i].at(row,col),1.0));
 		else
@@ -52,59 +53,59 @@ for (i = 0; i < 9; i++)
 	}
 }
 
-for (j = 0; j < 9; j++)
+for (j = 0; j < mSet.length; j++)
 {
-	var row = Math.floor(j / 3);
-	var col = j % 3;
+	var row = Math.floor(j / rank);
+	var col = j % rank;
 	if (row == col)
 		iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"I(" + row + "," + col + ")",mIdent.at(row,col),1.0));
 	else
 		iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"I(" + row + "," + col + ")",mIdent.at(row,col),0.0));
 }
 
-for (j = 0; j < 9; j++)
+for (j = 0; j < mSet.length; j++)
 {
-	var row = Math.floor(j / 3);
-	var col = j % 3;
+	var row = Math.floor(j / rank);
+	var col = j % rank;
 	iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"0(" + row + "," + col + ")",mZero.at(row,col),0.0));
 }
 
-for (j = 0; j < 9; j++)
+for (j = 0; j < mSet.length; j++)
 {
-	var row = Math.floor(j / 3);
-	var col = j % 3;
+	var row = Math.floor(j / rank);
+	var col = j % rank;
 	iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"N(" + row + "," + col + ")",mNN.at(row,col),j + 1));
 }
 
-for (j = 0; j < 9; j++)
+for (j = 0; j < mSet.length; j++)
 {
-	var row = Math.floor(j / 3);
-	var col = j % 3;
+	var row = Math.floor(j / rank);
+	var col = j % rank;
 	iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"transpose N(" + row + "," + col + ")",mNN.transpose().at(row,col),mNN.at(col,row)));
 }
 
-for (j = 0; j < 9; j++)
+for (j = 0; j < mSet.length; j++)
 {
-	var row = Math.floor(j / 3);
-	var col = j % 3;
+	var row = Math.floor(j / rank);
+	var col = j % rank;
 	iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"-N(" + row + "," + col + ")",mNN.negate().at(row,col),-(j + 1)));
 }
 
-for (j = 0; j < 9; j++)
+for (j = 0; j < mSet.length; j++)
 {
-	var row = Math.floor(j / 3);
-	var col = j % 3;
+	var row = Math.floor(j / rank);
+	var col = j % rank;
 	iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"2N(" + row + "," + col + ")",mNN.scale(2).at(row,col),2*(j + 1)));
 }
 
-for (i = 0; i < 9; i++)
+for (i = 0; i < mSet.length; i++)
 {
 	var letter = nToLetter(i);		
 		
-	for (j = 0; j < 9; j++)
+	for (j = 0; j < mSet.length; j++)
 	{
-		var row = Math.floor(j / 3);
-		var col = j % 3;
+		var row = Math.floor(j / rank);
+		var col = j % rank;
 		if (i == j)
 			iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(N + " + letter + ")(" + row + "," + col + ")",mNN.add(mSet[i]).at(row,col),2.0 + j));
 		else
@@ -113,14 +114,14 @@ for (i = 0; i < 9; i++)
 }
 
 
-for (i = 0; i < 9; i++)
+for (i = 0; i < mSet.length; i++)
 {
 	var letter = nToLetter(i);		
 		
-	for (j = 0; j < 9; j++)
+	for (j = 0; j < mSet.length; j++)
 	{
-		var row = Math.floor(j / 3);
-		var col = j % 3;
+		var row = Math.floor(j / rank);
+		var col = j % rank;
 		if (i == j)
 			iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(N - " + letter + ")(" + row + "," + col + ")",mNN.subtract(mSet[i]).at(row,col),j));
 		else
@@ -130,7 +131,7 @@ for (i = 0; i < 9; i++)
 
 
 
-for (i = 0; i < 9; i++)
+for (i = 0; i < mSet.length; i++)
 {
 	var letter = nToLetter(i);		
 		
@@ -143,22 +144,22 @@ iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"det(I)",mIdent.deter
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"det(0)",mZero.determinant(),0));
 
 
-for (i = 0; i < 9; i++)
+for (i = 0; i < mSet.length; i++)
 {
 	var letter = nToLetter(i);		
-	if (i % 3 == Math.floor(i / 3))		
+	if (i % rank == Math.floor(i / rank))		
 		iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(" + letter + ")",mSet[i].trace(),1));
 	else
 		iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(" + letter + ")",mSet[i].trace(),0));
 }
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(rand)",mRand.trace(),1.32712261));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(N)",mNN.trace(),15));
-iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(I)",mIdent.trace(),3));
+iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(I)",mIdent.trace(),rank));
 iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"tr(0)",mZero.trace(),0));
 
 
 
-for (j = 0; j < 3; j++)
+for (j = 0; j < rank; j++)
 {
 	var letter;
 	if (j == 0)
@@ -174,17 +175,17 @@ for (j = 0; j < 3; j++)
 }
 
 
-for (i = 0; i < 9; i++)
+for (i = 0; i < mSet.length; i++)
 {
 	var letter = nToLetter(i);		
 		
-	var rowi = Math.floor(i / 3);
-	var coli = i % 3;
+	var rowi = Math.floor(i / rank);
+	var coli = i % rank;
 		
-	for (j = 0; j < 9; j++)
+	for (j = 0; j < mSet.length; j++)
 	{
-		var row = Math.floor(j / 3);
-		var col = j % 3;
+		var row = Math.floor(j / rank);
+		var col = j % rank;
 		if (Math.floor(coli) == Math.floor(col))
 		{
 			iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(N * " + letter + ")(" + row + "," + col + ")", mNN.multiply(mSet[i]).at(row,col),mNN.at(row,rowi)));
@@ -198,9 +199,9 @@ for (i = 0; i < 9; i++)
 
 for (i = 0; i < mSetI.length; i++)
 {
-	for (j = 0; j < 3; j++)
+	for (j = 0; j < rank; j++)
 	{
-		for (k =0; k < 3; k++)
+		for (k =0; k < rank; k++)
 		{
 			iFailuresThreeMatrix.addEq(testValueAndReport(bSilent_Pass,"(" + i + ")^(-1)(" + j + "," + k + ")", mSetI[i].invert().at(j,k),mSetI[i].transpose().at(j,k)));
 		}
