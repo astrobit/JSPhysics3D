@@ -1,17 +1,5 @@
 
 
-function radiansToDegrees(radians)
-{
-	return radians * 180.0 / Math.PI;
-}
-
-function degreesToRadians(degrees)
-{
-	return degrees / 180.0 * Math.PI;
-}
-
-
-
 class Universe
 {
 	constructor()
@@ -32,11 +20,11 @@ class Universe
 	}
 	addEarthGravity()
 	{
-//		this._particles.push(new Particle(new FourVector(5.9722e24,0.0,new Position(new Vector(0,0,-6.3781e6))));
+//		this._particles.push(new Particle(new FourVector(kMassEarth,0.0,new Position(new Vector(0,0,-6.3781e6))));
 	}
 	addSunGravity(position)
 	{
-//		this._particles.push(new Particle(new FourVector(5.9722e24,0.0,position)));
+//		this._particles.push(new Particle(new FourVector(kMassSolar,0.0,position)));
 	}
 
 	addParticleTwo(mass, positionTwo, velocityTwo)
