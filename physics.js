@@ -1,23 +1,5 @@
 
 
-
-function fmod(value,modulo)// perform floating point modulo, returning a number between (-modulo .... modulo)
-{
-	var val = value / (1.0 * modulo);
-	var ret = (val - Math.floor(val));
-	if (val < 0)
-		ret = ret + 1.0;
-	return ret * modulo;
-}
-function fmodPos(value,modulo) // perform floating point modulo, returning a number that is always positive (0.... modulo)
-{
-	var val = value / (1.0 * modulo);
-	var ret = (val - Math.floor(val));
-	if (val < 0)
-		ret = ret + 2.0;
-	return ret * modulo;
-}
-
 function radiansToDegrees(radians)
 {
 	return radians * 180.0 / Math.PI;
@@ -28,251 +10,110 @@ function degreesToRadians(degrees)
 	return degrees / 180.0 * Math.PI;
 }
 
-class AngleVector
-{
-	constructor(alpha, beta, gamma)
-	{
-		if (alpha != null)
-			this._alpha = alpha;
-		else
-			this._alpha = 0;
-		if (beta != null)
-			this._beta = beta;
-		else
-			this._beta = 0;
-		if (gamma != null)
-			this._gamma = gamma;
-		else
-			this._gamma = 0;
-		fixAngles();
-	}
-	get alpha() {return this._alpha;}
-	get beta() {return this._beta;}
-	get gamma() {return this._gamma;}
-	
-	get alphaDegrees() {return radiansToDegrees(this._alpha);}
-	get betaDegrees() {return radiansToDegrees(this._beta);}
-	get gammaDegrees() {return radiansToDegrees(this._gamma);}
-	function fixAngles()
-	{
-		this._alpha = fmodPos(this._alpha,2.0 * Math.PI); // 0 ... 2pi
-		this._beta = fmodPos(this._beta,Math.PI); // 0 ... pi
-		this._gamma = fmodPos(this._gamma,2.0 * Math.PI); // 0 ... 2pi
-	}
-
-	set alpha(value) {this._alpha = value; fixAngles(); }
-	set beta(value) {this._beta = value;fixAngles();}
-	set gamma(value) {this._gamma = value;fixAngles();}
-
-	set alphaDegrees(value) {this._alpha = degreesToRadians(value); fixAngles(); }
-	set betaDegrees(value) {this._beta = degreesToRadians(value);fixAngles();}
-	set gammaDegrees(value) {this._gamma = degreesToRadians(value);fixAngles();}
-
-	function add(vectB)
-	{
-		return new Vector(this._alpha + vectB.alpha,this._beta + vectB.beta,this._gamma + vectB.gamma);
-	}
-	function negate()
-	{
-		return new Vector(-this._alpha,-this._beta,-this._gamma);
-	}
-	function subtract(vectB)
-	{
-		return add(vectB.negate());
-	}
-	function scale(scalar)
-	{
-		return new Vector(this._alpha * scalar,this._beta * scalar,this._gamma * scalar);
-	}
-	function divide(scalar)
-	{
-		return scale(1.0 / scalar);
-	}
-
-//	get rotationMatrix()
-//	{
-		
-}
-
-class Position
-{
-	constructor(p,v,a)
-	{
-		if (p != null && typeof(p) == "Vector")
-			this._p = new Vector(p.x,p.y,p.z);
-		else
-			this._p = new Vector();
-
-		if (v != null && typeof(v) == "Vector")
-			this._v = new Vector(v.x,v.y,v.z);
-		else
-			this._v = new Vector();
-
-		if (a != null && typeof(a) == "Vector")
-			this._p = new Vector(a.x,a.y,a.z);
-		else
-			this._p = new Vector();
-	}
-
-	function update(timestep,jerk)
-	{
-		var jerkLcl;
-		if (jerk == null || typeof(jerk) != "Vector")
-			jerkLcl = new Vector();
-		else
-			jerkLcl = jerk;
-		this._p = this._p._add(this._v.scale(timestep));
-		this._p = this._p._add(this._a.scale(0.5 * timestep * timestep));
-		this._p = this._p._add(jerkLcl.scale(0.5 * timestep * timestep * timestep / 3.0));
-		
-		this._v = this._v._add(this._a.scale(timestep));
-		this._v = this._v._add(jerkLcl.scale(0.5 * timestep * timestep));
-		
-		this._a = this._a._add(jerkLcl.scale(timestep));
-	}
-
-	get x() {return this._p.x;}
-	set x(value) {this._p.x = value;}
-
-	get y() {return this._p.y;}
-	set y(value) {this._p.y = value;}
-
-	get z() {return this._p.z;}
-	set z(value) {this._p.z = value;}
-
-	get vx() {return this._v.x;}
-	set vx(value) {this._v.x = value;}
-
-	get vy() {return this._v.y;}
-	set vy(value) {this._v.y = value;}
-
-	get vz() {return this._v.z;}
-	set vz(value) {this._v.z = value;}
-
-	get ax() {return this._a.x;}
-	set ax(value) {this._a.x = value;}
-
-	get ay() {return this._a.y;}
-	set ay(value) {this._a.y = value;}
-
-	set az(value) {this._a.z = value;}
-	get az() {return this._a.z;}
-
-	get p() {return this._p;}
-	set p(value) {this._p = value;}
-	get v() {return this._v;}
-	set v(value) {this._v = value;}
-
-	get a() {return this._a;}
-	set a(value) {this._a = value;}
-}
+const kSpeedLight = 299792458.0;
 
 class Particle
 {
-	constructor(mass,charge,positionData,rotationData,momentOfInertiaInverse)
+	setPosition(value)
 	{
-		if (mass != null)
-			this._mass = mass;
-		else
-			this._mass = 0.0;
-		if (charge != null)
-			this._charge = charge;
-		else
-			this._charge = 0.0;
-		if (positionData != null)
-			this._positionData = positionData;
-		else
-			this._positionData = new Position();
-		if (rotationData != null)
-			this._rotationData = rotationData;
-		else
-			this._rotationData = new Position();
-		if (momentOfInertiaInverse != null)
-			this._momentOfInertiaInverse = momentOfInertiaInverse;
-		else
+		if (value != null && value instanceof FourVector)
 		{
-			this._momentOfInertiaInverse = new Tensor();
-			if (this._mass != 0.0)
-			{
-				this._momentOfInertiaInverse.setat(0,0,1.0 / this._mass);
-				this._momentOfInertiaInverse.setat(1,1,1.0 / this._mass);
-				this._momentOfInertiaInverse.setat(2,2,1.0 / this._mass);
-			}
-			else
-			{
-				this._momentOfInertiaInverse.setat(0,0,1.0);
-				this._momentOfInertiaInverse.setat(1,1,1.0);
-				this._momentOfInertiaInverse.setat(2,2,1.0);
-			}
-
+			this._positionData._t = value.t;
+			this._positionData._x = value.x;
+			this._positionData._y = value.y;
+			this._positionData._z = value.z;
 		}
-
+		else if (value != null && value instanceof ThreeVector)
+		{
+			this._positionData._t = 0.0;
+			this._positionData._x = value.x;
+			this._positionData._y = value.y;
+			this._positionData._z = value.z;
+		}
+		else if (value != null && value instanceof TwoVector)
+		{
+			this._positionData._t = 0.0;
+			this._positionData._x = value.x;
+			this._positionData._y = value.y;
+			this._positionData._z = 0.0;
+		}
+	}
+	setMomentum(value)
+	{
+		if (value != null && value instanceof FourVector)
+		{
+			this._fourMomentum._t = value.t;
+			this._fourMomentum._x = value.x;
+			this._fourMomentum._y = value.y;
+			this._fourMomentum._z = value.z;
+		}
+		else if (value != null && value instanceof ThreeVector)
+		{
+			var mass = Math.sqrt(this._fourMomentum.dot(this._fourMomentum));
+			this._fourMomentum._x = value.x / kSpeedLight;
+			this._fourMomentum._y = value.y / kSpeedLight;
+			this._fourMomentum._z = value.z / kSpeedLight;
+			this._fourMomentum._t = mass * (1 + this._fourMomentum._x * this._fourMomentum._x + this._fourMomentum._y * this._fourMomentum._y + this._fourMomentum._z * this._fourMomentum._z);
+		}
+		else if (value != null && value instanceof TwoVector)
+		{
+			var mass = Math.sqrt(this._fourMomentum.dot(this._fourMomentum));
+			this._fourMomentum._x = value.x / kSpeedLight;
+			this._fourMomentum._y = value.y / kSpeedLight;
+			this._fourMomentum._z = 0.0;
+			this._fourMomentum._t = mass * (1 + this._fourMomentum._x * this._fourMomentum._x + this._fourMomentum._y * this._fourMomentum._y + this._fourMomentum._z * this._fourMomentum._z);
+		}
 	}
 
-	get mass() {return this._mass;}
-	set mass(value) {this._mass = value;}
+	constructor(fourMomentum,position)
+	{
+		this._fourMomentum = new FourVector();
+		this._positionData = new FourVector();
 
-	get charge() {return this._charge;}
-	set charge(value) {this._charge = value;}
+		this.setMomentum(fourMomentum);
+		this.setPosition(position);
+			
+		this._netForce = new FourVector();
+//		console.log("initialized momentum " + this._fourMomentum.t + " " + this._fourMomentum.x + " " + this._fourMomentum.y + " " + this._fourMomentum.z);
+//		console.log("initialized pos " + this._positionData.t + " " + this._positionData.x + " " + this._positionData.y + " " + this._positionData.z);
+	}
 
-	get positionData() {return this._positionData;}
-	set positionData(value) {this._positionData = value;}
 
-	get rotationData() {return this._rotationData;}
-	set rotationData(value) {this._rotationData = value;}
+	get position() {return this._positionData;}
+	set position(value)
+	{
+		this.setPosition(value);
+	}
 
-	get momentOfInertiaInverse() {return this._momentOfInertiaInverse;}
-	set momentOfInertiaInverse(value) {this._momentOfInertiaInverse = value;}
-
-	get x() {return this._positionData.x;}
-	set x(value) {this._positionData.x = value;}
-
-	get y() {return this._positionData.y;}
-	set y(value) {this._positionData.y = value;}
-
-	get z() {return this._positionData.z;}
-	set z(value) {this._positionData.z = value;}
-
-	get vx() {return this._positionData.vx;}
-	set vx(value) {this._positionData.vx = value;}
-
-	get vy() {return this._positionData.vy;}
-	set vy(value) {this._positionData.vy = value;}
-
-	get vz() {return this._positionData.vz;}
-	set vz(value) {this._positionData.vz = value;}
-
-	get ax() {return this._positionData.ax;}
-	set ax(value) {this._positionData.ax = value;}
-
-	get ay() {return this._positionData.ay;}
-	set ay(value) {this._positionData.ay = value;}
-
-	get az() {return this._positionData.az;}
-	set az(value) {this._positionData.az = value;}
-
-	get p() {return this._positionData.p;}
-	set p(value) {this._positionData.p = value;}
-
-	get v() {return this._positionData.v;}
-	set v(value) {this._positionData.v = value;}
-
-	get a() {return this._positionData.a;}
-	set a(value) {this._positionData.a = value;}
+	get momentum() {return this._fourMomentum;}
+	set momentum(value)
+	{
+		this.setMomentum(value);
+	}
 
 	// the force function determines torques and forces on the particle
-	function applyForce(force,location)
+	applyForce(force)
 	{
-		this._positionData.a.add(force.divide(this._mass));
-		var torque = location.cross(force);
-		this._rotationData.a.add(this._momentOfInertiaInverse.dotVector(torque));
+		this._netForce = this._netForce.add(force);
+//		var torque = location.cross(force);
+//		this._rotationData.a.add(this._momentOfInertiaInverse.dotVector(torque));
 		
 	}
 
-	function update(timestep)
+	update(timestep)
 	{
-		this._positionData.update(timestep);
-		this._rotationData.update(timestep);
+//		console.log("update net force " + this._netForce.t + " " + this._netForce.x + " " + this._netForce.y + " " + this._netForce.z);
+		var accel = new FourVector(this._netForce.t  / this._fourMomentum.t,this._netForce.x / this._fourMomentum.t,this._netForce.y / this._fourMomentum.t,this._netForce.z / this._fourMomentum.t);
+//		console.log("update accel " + accel.t + " " + accel.x + " " + accel.y + " " + accel.z);
+		var vel = new FourVector(kSpeedLight,kSpeedLight * this._fourMomentum.x / this._fourMomentum.t,kSpeedLight * this._fourMomentum.y / this._fourMomentum.t,kSpeedLight * this._fourMomentum.z / this._fourMomentum.t);
+//		console.log("update vel " + vel.t + " " + vel.x + " " + vel.y + " " + vel.z);
+		
+		this._fourMomentum = this._fourMomentum.add(this._netForce.scale(timestep / kSpeedLight));
+//		console.log("update momentum " + this._fourMomentum.t + " " + this._fourMomentum.x + " " + this._fourMomentum.y + " " + this._fourMomentum.z);
+		this._positionData = this._positionData.add(vel.scale(timestep).add(accel.scale(0.5*timestep*timestep)));
+//		console.log("update pos " + this._positionData.t + " " + this._positionData.x + " " + this._positionData.y + " " + this._positionData.z);
+		
+		this._netForce.loadZero(); // clear forces
 	}
 }
 
@@ -281,86 +122,157 @@ class Universe
 	constructor()
 	{
 		this._particles = new Array();
-		this._doNewtonianGravity = true;
-		this._doEinsteinGravity = false;
-		this._doElecricForcesNewtonian = true;
-		this._doElecricForcesEinstein = false;
+		this._doGravity = true;
+		this._doNewtonianGravity = false;
+		this._doConstantGravity = false;
+		this._doElecricForces = true;
+		this._ConstantGravity = new FourVector(9.8,0,0,-9.8);
 	}
-	function addEarthGravity()
+	particle(idx)
 	{
-		this.particles.push(new Particle(5.9722e24,0.0,new Position(new Vector(0,0,-6.3781e6))));
+		var ret = null;
+		if (idx >= 0 && idx < this._particles.length)
+			ret = this._particles[idx];
+		return ret;
+	}
+	addEarthGravity()
+	{
+//		this._particles.push(new Particle(new FourVector(5.9722e24,0.0,new Position(new Vector(0,0,-6.3781e6))));
+	}
+	addSunGravity(position)
+	{
+//		this._particles.push(new Particle(new FourVector(5.9722e24,0.0,position)));
 	}
 
-	function addParticle(particle)
+	addParticleTwo(mass, positionTwo, velocityTwo)
 	{
-		var ret = this._particles.length();
-		this._particles.push(new Particle(particle.mass,particle.charge,particle.positionData,particle.rotationData
-	function gravityNewtonian()
+		var ret = this._particles.length;
+		var gammaX = 1.0 / Math.sqrt(1.0 - (velocityThree.x / kSpeedLight)**2);
+		var gammaY = 1.0 / Math.sqrt(1.0 - (velocityThree.y / kSpeedLight)**2);
+		
+		var FourMomentum = new FourVector(mass * Math.sqrt(1 + gammaX * gammaX + gammaY * gammaY),
+											mass * gammaX,
+											mass * gammaY,
+											0
+											);
+		var FourPosition = new FourVector(0,positionThree.x,positionThree.y);		
+		
+		this._particles.push(new Particle(FourMomentum,FourPosition));
+		return ret;
+	}
+
+	addParticleThree(mass, positionThree, velocityThree)
+	{
+		var ret = this._particles.length;
+		var gammaX = velocityThree.x / kSpeedLight;
+		var gammaY = velocityThree.y / kSpeedLight;
+		var gammaZ = velocityThree.z / kSpeedLight;
+		if (Math.abs(velocityThree.x / kSpeedLight) > 0.0001)
+			gammaX = 1.0 / Math.sqrt(1.0 - (velocityThree.x / kSpeedLight)**2) - 1;
+		if (Math.abs(velocityThree.y / kSpeedLight) > 0.0001)
+			gammaY = 1.0 / Math.sqrt(1.0 - (velocityThree.y / kSpeedLight)**2) - 1;
+		if (Math.abs(velocityThree.z / kSpeedLight) > 0.0001)
+			gammaZ = 1.0 / Math.sqrt(1.0 - (velocityThree.z / kSpeedLight)**2) - 1;
+		
+//		console.log("init " + ret + " gx " + gammaX + " gy " + gammaY + " gz " + gammaZ);
+		var FourMomentum = new FourVector(mass * Math.sqrt(1 + gammaX * gammaX + gammaY * gammaY + gammaZ * gammaZ),
+											mass * gammaX,
+											mass * gammaY,
+											mass * gammaZ
+											);
+		var FourPosition = new FourVector(0,positionThree.x,positionThree.y,positionThree.z);		
+		
+		this._particles.push(new Particle(FourMomentum,FourPosition));
+		return ret;
+	}
+	
+	addParticleThreeMomentum(mass,momentumThree, positionThree)
+	{
+		var ret = this._particles.length;
+		
+		var FourMomentum = new FourVector(particle.mass * Math.sqrt(1 + gammaX * gammaX + gammaY * gammaY + gammaZ * gammaZ),
+											momentumThree.x,
+											momentumThree.y,
+											momentumThree.z
+											);
+		var FourPosition = new FourVector(0,positionThree.x,positionThree.y,positionThree.z);		
+		
+		this._particles.push(new Particle(FourMomentum,FourPosition));
+		return ret;
+	}
+	addParticleFourMomentum(momentumFour, positionFour)
+	{
+		var ret = this._particles.length;
+		this._particles.push(new Particle(momentumFour,positionFour));
+		return ret;
+	}
+
+	gravity()
 	{
 		var i,j;
 		for (i = 0; i < this._particles.length; i++)
 		{
-			var force = new Vector(0,0,0);
-			for (j = 0; j < this._particles.length; j++)
+			if (this._doConstantGravity)
 			{
-				if (i != j && (this._particles[i].x != this._particles[j].x || this._particles[i].y != this._particles[j].y || this._particles[i].z != this._particles[j].z))
+				var mass;
+				if (this._doNewtonianGravity)
+					mass = Math.sqrt(this._particles[i].magnitude()); // rest mass
+				else
+					mass = this._particles[i]._fourMomentum.t;// relativistic mass
+				//console.log("gravity const " + i + " "  + this._ConstantGravity.scale(mass).t + " " + this._ConstantGravity.scale(mass).x + " " + this._ConstantGravity.scale(mass).y + " " + this._ConstantGravity.scale(mass).z)
+				this._particles[i].applyForce(this._ConstantGravity.scale(mass));
+			}
+			else
+			{
+				var jlimit = Math.ceil(this._particles.length * 0.5);
+				for (j = 0; j < jlimit; j++)
 				{
-					var thisposition = this._particles[j].p.subtract(this._particles[i].p);
-					var distance = thisposition.magnitude();
-					var strength = 6.67430e-11 * this._particles[i].mass * this._particles[j].mass / (distance * distance);
-					var ret = thisposition.unit();
-					ret.scale(strength);
-					force.add(ret);
+					if (i != j && (this._particles[i].x != this._particles[j].x || this._particles[i].y != this._particles[j].y || this._particles[i].z != this._particles[j].z))
+					{
+						var thisposition = this._particles[j].p.subtract(this._particles[i].p);
+						var distance = thisposition.magnitude();
+						var invDistance = 1.0 / distance;
+						var massProduct;
+						if (this._doNewtonianGravity)
+							massProduct = Math.sqrt(this._particles[i].magnitude()) * Math.sqrt(this._particles[j].magnitude());
+						else
+							massProduct = this._particles[i]._fourMomentum.t * this._particles[j]._fourMomentum.t;
+						var strength = -6.67430e-11 * massProduct / (distance * distance);
+						
+						var thisForce = new FourVector(strength,strength * thisposition.x * invDistance,strength * thisposition.y * invDistance,strength * thisposition.z * invDistance);
+						this._particles[i].applyForce(thisForce);
+						this._particles[j].applyForce(thisForce.negate());
+					}
 				}
 			}
 		}
 	}
-	function gravityEinstein()
+
+	update(timestep)
 	{
-		gravityNewton();
-	}
-	function electricForcesNewton()
-	{
-		var i,j;
+		if (this._doGravity)
+			this.gravity();
 		for (i = 0; i < this._particles.length; i++)
 		{
-			var force = new Vector(0,0,0);
-			for (j = 0; j < this._particles.length; j++)
-			{
-				if (i != j && (this._particles[i].x != this._particles[j].x || this._particles[i].y != this._particles[j].y || this._particles[i].z != this._particles[j].z))
-				{
-					var thisposition = this._particles[j].p.subtract(this._particles[i].p);
-					var distance = thisposition.magnitude();
-					var strength = 8.9875517923e9 * this._particles[i].charge * this._particles[j].charge / (distance * distance);
-					var ret = thisposition.unit();
-					ret.scale(strength);
-					force.add(ret);
-				}
-			}
+			this._particles[i].update(timestep);
 		}
 	}
-	function electricForcesEinstein()
+	setGravityOff() { this._doGravity = false;}
+	setGravityNewton() { this._doGravity = true; this._doNewtonianGravity = true;this._doConstantGravity = false;}
+	setGravityEinsten() { this._doGravity = true; this._doNewtonianGravity = false;this._doConstantGravity = false;}
+	setGravityConstant(strength,direction)
 	{
-		electricForcesNewton();
+		this._doGravity = true; 
+		this._doNewtonianGravity = false;
+		this._doConstantGravity = true;
+		if (direction instanceof FourVector || direction instanceof ThreeVector)
+		{
+			this._ConstantGravity = new FourVector(strength,strength * direction.x,strength * direction.y,strength * direction.z);
+		}
+		else if (direction instanceof TwoVector)
+		{
+			this._ConstantGravity = new FourVector(strength,strength * direction.x,strength * direction.y,0.0);
+		}
 	}
-	function update(timestep)
-	{
-		if (this._doNewtonianGravity)
-			gravityNewtonian();
-		if (this._doEinsteinGravity)
-			gravityEinstein();
-		if (this._doElecricForcesNewtonian)
-			electricForcesNewton();
-		if (this._doElecricForcesEinstein)
-			electricForcesEinstein();
-
-	}
-	function setGravityOff() { this._doNewtonianGravity = false; this._doEinsteinGravity = false;}
-	function setGravityNewton() { this._doNewtonianGravity = true; this._doEinsteinGravity = false;}
-	function setGravityEinsten() { this._doNewtonianGravity = false; this._doEinsteinGravity = true;}
-
-	function setElectricOff() { this._doElecricForcesNewtonian = false; this._doElecricForcesEinstein = false;}
-	function setElectricNewton() { this._doElecricForcesNewtonian = true; this._doElecricForcesEinstein = false;}
-	function setElectricEinsten() { this._doElecricForcesNewtonian = false; this._doElecricForcesEinstein = true;}
 }
 
