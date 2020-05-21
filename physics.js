@@ -124,7 +124,7 @@ class Universe
 						var invDistance = 1.0 / distance;
 						var massProduct;
 						if (this._doNewtonianGravity)
-							massProduct = this._particles[i].mass() * this._particles[j].mass();
+							massProduct = this._particles[i].mass * this._particles[j].mass;
 						else
 							massProduct = this._particles[i]._fourMomentum.t * this._particles[j]._fourMomentum.t;
 						var strength = 6.67430e-11 * massProduct / (distance * distance);
