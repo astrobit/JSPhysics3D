@@ -150,7 +150,7 @@ class Universe
 	}
 	setGravityOff() { this._doGravity = false;}
 	setGravityNewton() { this._doGravity = true; this._doNewtonianGravity = true;this._doConstantGravity = false;}
-	setGravityEinsten() { this._doGravity = true; this._doNewtonianGravity = false;this._doConstantGravity = false;}
+	setGravityEinstein() { this._doGravity = true; this._doNewtonianGravity = false;this._doConstantGravity = false;}
 	setGravityConstant(strength,direction)
 	{
 		this._doGravity = true; 
