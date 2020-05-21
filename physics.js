@@ -20,7 +20,9 @@ class Universe
 	}
 	addEarthGravity()
 	{
-//		this._particles.push(new Particle(new FourVector(kMassEarth,0.0,new Position(new Vector(0,0,-6.3781e6))));
+		var ret = this._particles.length;
+		this._particles.push(new Particle(new FourVector(kMassEarth,0.0,0.0,0.0),new ThreeVector(0,0,-kRadiusEarth)));
+		return ret;
 	}
 	addSunGravity(position)
 	{
@@ -107,22 +109,28 @@ class Universe
 			}
 			else
 			{
-				var jlimit = Math.ceil(this._particles.length * 0.5);
-				for (j = 0; j < jlimit; j++)
+				//console.log("general gravity " + i);
+				for (j = (i + 1); j < this._particles.length; j++)
 				{
+					//console.log("general gravity " + i + " " + j);
+					//console.log("general gravity " + i + " " + j + "<" + this._particles[i].x + ", " + this._particles[i].y + ", " + this._particles[i].z + "> - <" + this._particles[j].x + ", " + this._particles[j].y + ", " + this._particles[j].z + ">" );
+//					console.log((i != j) +  " " +  (this._particles[i].x != this._particles[j].x) +  " " + (this._particles[i].y != this._particles[j].y) +  " " + (this._particles[i].z != this._particles[j].z));
+					
 					if (i != j && (this._particles[i].x != this._particles[j].x || this._particles[i].y != this._particles[j].y || this._particles[i].z != this._particles[j].z))
 					{
-						var thisposition = this._particles[j].p.subtract(this._particles[i].p);
+						var thisposition = this._particles[j].position.subtract(this._particles[i].position);
+						thisposition.t = 0;
 						var distance = thisposition.magnitude();
 						var invDistance = 1.0 / distance;
 						var massProduct;
 						if (this._doNewtonianGravity)
-							massProduct = Math.sqrt(this._particles[i].magnitude()) * Math.sqrt(this._particles[j].magnitude());
+							massProduct = this._particles[i].mass() * this._particles[j].mass();
 						else
 							massProduct = this._particles[i]._fourMomentum.t * this._particles[j]._fourMomentum.t;
-						var strength = -6.67430e-11 * massProduct / (distance * distance);
-						
+						var strength = 6.67430e-11 * massProduct / (distance * distance);
+						//console.log("grav: " + i + " " + j + " " + massProduct + " " + distance + " " + strength);
 						var thisForce = new FourVector(strength,strength * thisposition.x * invDistance,strength * thisposition.y * invDistance,strength * thisposition.z * invDistance);
+						//console.log("grav: " + i + " " + j + " " + (thisForce.z - this._ConstantGravity.z));
 						this._particles[i].applyForce(thisForce);
 						this._particles[j].applyForce(thisForce.negate());
 					}
