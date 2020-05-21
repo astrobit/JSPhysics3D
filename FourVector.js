@@ -10,30 +10,40 @@
 class FourVector
 {
 /** 
-ThreeVector constructor
-@param t The timelike component
-@param x The spacelike x component
-@param y The spacelike y component
-@param z The spacelike z component
+FourVector constructor
+@param t The timelike component or a FourVector
+@param x The spacelike x component, ignored if t is a FourVector
+@param y The spacelike y component, ignored if t is a FourVector
+@param z The spacelike z component, ignored if t is a FourVector
 */
 	constructor(t,x,y,z)
 	{
-		if (t != null)
-			this._t = t;
-		else
-			this._t = 0;
-		if (x != null)
-			this._x = x;
-		else
-			this._x = 0;
-		if (y != null)
-			this._y = y;
-		else
-			this._y = 0;
-		if (z != null)
-			this._z = z;
-		else
-			this._z = 0;
+		if (t != null && t instanceof FourVector)
+		{
+			this._t = t._t;
+			this._x = t._x;
+			this._y = t._y;
+			this._z = t._z;
+		}
+		else 
+		{
+			if (t != null)
+				this._t = t;
+			else
+				this._t = 0;
+			if (x != null)
+				this._x = x;
+			else
+				this._x = 0;
+			if (y != null)
+				this._y = y;
+			else
+				this._y = 0;
+			if (z != null)
+				this._z = z;
+			else
+				this._z = 0;
+		}
 	}
 /** 
 Get for the timelike component
