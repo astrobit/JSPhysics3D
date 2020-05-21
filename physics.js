@@ -129,7 +129,7 @@ class Universe
 							massProduct = this._particles[i]._fourMomentum.t * this._particles[j]._fourMomentum.t;
 						var strength = 6.67430e-11 * massProduct / (distance * distance);
 						//console.log("grav: " + i + " " + j + " " + massProduct + " " + distance + " " + strength);
-						var thisForce = new FourVector(strength,strength * thisposition.x * invDistance,strength * thisposition.y * invDistance,strength * thisposition.z * invDistance);
+						var thisForce = new FourVector(-strength,strength * thisposition.x * invDistance,strength * thisposition.y * invDistance,strength * thisposition.z * invDistance);
 						//console.log("grav: " + i + " " + j + " " + (thisForce.z - this._ConstantGravity.z));
 						this._particles[i].applyForce(thisForce);
 						this._particles[j].applyForce(thisForce.negate());
@@ -158,11 +158,11 @@ class Universe
 		this._doConstantGravity = true;
 		if (direction instanceof FourVector || direction instanceof ThreeVector)
 		{
-			this._ConstantGravity = new FourVector(strength,strength * direction.x,strength * direction.y,strength * direction.z);
+			this._ConstantGravity = new FourVector(-strength,strength * direction.x,strength * direction.y,strength * direction.z);
 		}
 		else if (direction instanceof TwoVector)
 		{
-			this._ConstantGravity = new FourVector(strength,strength * direction.x,strength * direction.y,0.0);
+			this._ConstantGravity = new FourVector(-strength,strength * direction.x,strength * direction.y,0.0);
 		}
 	}
 }
