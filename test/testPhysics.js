@@ -44,5 +44,22 @@ for (m = 0; m < 100; m++)
 //	console.log(((m + 1) * 0.01) + " " + universe.particle(partOne).position.z + " " + (-0.5 * gEarth * ((m + 1) * 0.01) * ((m + 1) * 0.01)));
 }
 
+universe.setGravityEinstein();
+setTestEpsilon(1.0e-5); // relax value threshold for these tests.
+for (m = 0; m < 100; m++)
+{
+//	universe.gravity();
+	universe.update(0.01);
+	var t = (m + 201) * 0.01;
+	physicsFailures.addEq(testValueAndReport(bSilent_Pass,"Einstein gravity @ " + t,universe.particle(partOne).position.z,(-0.5 * gEarth * t * t)));
+	physicsFailures.addEq(testValueAndReport(bSilent_Pass,"Einstein gravity with v0 = 1 @ " + t,universe.particle(partTwo).position.z,((1.0 - 0.5 * gEarth * t) * t)));
+	physicsFailures.addEq(testValueAndReport(bSilent_Pass,"Einstein gravity v = (0,1,0) z@ " + t,universe.particle(partThree).position.z,(-0.5 * gEarth * t * t)));
+	physicsFailures.addEq(testValueAndReport(bSilent_Pass,"Einstein gravity v = (0,1,0) y@ " + t,universe.particle(partThree).position.y,(1 * t)));
+	physicsFailures.addEq(testValueAndReport(bSilent_Pass,"Einstein gravity v = (1,0,0) z@ " + t,universe.particle(partFour).position.z,(-0.5 * gEarth * t * t)));
+	physicsFailures.addEq(testValueAndReport(bSilent_Pass,"Einstein gravity v = (1,0,0) x@ " + t,universe.particle(partFour).position.x,(3 + 1 * t)));
+	
+//	console.log(((m + 1) * 0.01) + " " + universe.particle(partOne).position.z + " " + (-0.5 * gEarth * ((m + 1) * 0.01) * ((m + 1) * 0.01)));
+}
+
 resetTestEpsilon();
 physicsFailures.report("Physics");
