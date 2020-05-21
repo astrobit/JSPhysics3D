@@ -28,7 +28,7 @@ for (m = 0; m < 100; m++)
 
 var partEarth = universe.addEarthGravity();
 universe.setGravityNewton();
-setTestEpsilon(1.0e-4); // relax value threshold for these tests.
+setTestEpsilon(1.0e-6); // relax value threshold for these tests.
 for (m = 0; m < 100; m++)
 {
 //	universe.gravity();
