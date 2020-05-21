@@ -11,24 +11,33 @@ class ThreeVector
 {
 /** 
 ThreeVector constructor
-@param x The x component
-@param y The y component
-@param z The z component
+@param x The x component or a ThreeVector 
+@param y The y component, ignored if x is a ThreeVector
+@param z The z component, ignored if x is a ThreeVector
 */
 	constructor(x,y,z)
 	{
-		if (x != null)
-			this._x = x;
-		else
-			this._x = 0;
-		if (y != null)
-			this._y = y;
-		else
-			this._y = 0;
-		if (z != null)
-			this._z = z;
-		else
-			this._z = 0;
+		if (x != null && x instanceof ThreeVector)
+		{
+			this._x = t._x;
+			this._y = t._y;
+			this._z = t._z;
+		}
+		else 
+		{
+			if (x != null)
+				this._x = x;
+			else
+				this._x = 0;
+			if (y != null)
+				this._y = y;
+			else
+				this._y = 0;
+			if (z != null)
+				this._z = z;
+			else
+				this._z = 0;
+		}
 	}
 /** 
 Get for the x component
