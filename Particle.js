@@ -70,11 +70,21 @@ class Particle
 	{
 		this.setPosition(value);
 	}
+	
+	get x() {return this._positionData.x;}
+	get y() {return this._positionData.x;}
+	get z() {return this._positionData.x;}
+	
 
 	get momentum() {return this._fourMomentum;}
 	set momentum(value)
 	{
 		this.setMomentum(value);
+	}
+	
+	mass()
+	{
+		return Math.sqrt(this._fourMomentum.t * this._fourMomentum.t - this._fourMomentum.x * this._fourMomentum.x - this._fourMomentum.y * this._fourMomentum.y - this._fourMomentum.z * this._fourMomentum.z);
 	}
 
 	// the force function determines torques and forces on the particle
