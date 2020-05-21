@@ -60,6 +60,9 @@ class Particle
 		this.setPosition(position);
 			
 		this._netForce = new FourVector();
+		this._lastForce = new FourVector();
+		
+		this._lastAccel = new FourVector();
 //		console.log("initialized momentum " + this._fourMomentum.t + " " + this._fourMomentum.x + " " + this._fourMomentum.y + " " + this._fourMomentum.z);
 //		console.log("initialized pos " + this._positionData.t + " " + this._positionData.x + " " + this._positionData.y + " " + this._positionData.z);
 	}
@@ -71,18 +74,46 @@ class Particle
 		this.setPosition(value);
 	}
 	
+	get t() {return this._positionData.t;}
 	get x() {return this._positionData.x;}
-	get y() {return this._positionData.x;}
-	get z() {return this._positionData.x;}
+	get y() {return this._positionData.y;}
+	get z() {return this._positionData.z;}
 	
+	get vt() {return kSpeedLight;}
+	get vx() {return kSpeedLight * this._fourMomentum.x / this._fourMomentum.t;}
+	get vy() {return kSpeedLight * this._fourMomentum.y / this._fourMomentum.t;}
+	get vz() {return kSpeedLight * this._fourMomentum.z / this._fourMomentum.t;}
+	
+	get velocity()
+	{
+		return new FourVector(kSpeedLight,
+								kSpeedLight * this._fourMomentum.x / this._fourMomentum.t,
+								kSpeedLight * this._fourMomentum.y / this._fourMomentum.t,
+								kSpeedLight * this._fourMomentum.z / this._fourMomentum.t
+								);
+	}
 
-	get momentum() {return this._fourMomentum;}
+	get at() {return this._lastAccel.t;}
+	get ax() {return this._lastAccel.x;}
+	get ay() {return this._lastAccel.y;}
+	get az() {return this._lastAccel.z;}
+	
+	get acceleration()
+	{
+		return new FourVector(this._lastAccel);
+	}
+	
+	get pt() {return this._fourMomentum.t;}
+	get px() {return this._fourMomentum.x;}
+	get py() {return this._fourMomentum.y;}
+	get pz() {return this._fourMomentum.z;}
+	get momentum() {return new FourVector(this._fourMomentum);}
 	set momentum(value)
 	{
 		this.setMomentum(value);
 	}
 	
-	mass()
+	get mass()
 	{
 		return Math.sqrt(this._fourMomentum.t * this._fourMomentum.t - this._fourMomentum.x * this._fourMomentum.x - this._fourMomentum.y * this._fourMomentum.y - this._fourMomentum.z * this._fourMomentum.z);
 	}
@@ -101,14 +132,15 @@ class Particle
 //		console.log("update net force " + this._netForce.t + " " + this._netForce.x + " " + this._netForce.y + " " + this._netForce.z);
 		var accel = new FourVector(this._netForce.t  / this._fourMomentum.t,this._netForce.x / this._fourMomentum.t,this._netForce.y / this._fourMomentum.t,this._netForce.z / this._fourMomentum.t);
 //		console.log("update accel " + accel.t + " " + accel.x + " " + accel.y + " " + accel.z);
-		var vel = new FourVector(kSpeedLight,kSpeedLight * this._fourMomentum.x / this._fourMomentum.t,kSpeedLight * this._fourMomentum.y / this._fourMomentum.t,kSpeedLight * this._fourMomentum.z / this._fourMomentum.t);
+		var vel = this.velocity;
 //		console.log("update vel " + vel.t + " " + vel.x + " " + vel.y + " " + vel.z);
 		
 		this._fourMomentum = this._fourMomentum.add(this._netForce.scale(timestep / kSpeedLight));
 //		console.log("update momentum " + this._fourMomentum.t + " " + this._fourMomentum.x + " " + this._fourMomentum.y + " " + this._fourMomentum.z);
 		this._positionData = this._positionData.add(vel.scale(timestep).add(accel.scale(0.5*timestep*timestep)));
 //		console.log("update pos " + this._positionData.t + " " + this._positionData.x + " " + this._positionData.y + " " + this._positionData.z);
-		
+		this._lastAccel = new FourVector(accel);
+		this._lastForce = new FourVector(this._netForce);		
 		this._netForce.loadZero(); // clear forces
 	}
 }
