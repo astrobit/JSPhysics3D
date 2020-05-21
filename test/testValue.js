@@ -39,10 +39,18 @@ class TestCount
 		displayMessage(type + " PASS: " + (this._count - this._failures) + " FAIL: " + this._failures);
 	}
 }
+var fTestEpsilon = 1.0e-7;
+function resetTestEpsilon()
+{
+	fTestEpsilon = 1.0e-7;
+}
+function setTestEpsilon(value)
+{
+	fTestEpsilon = value;
+}
 
 function testValue(actual, expected)
 {
-	var fEpsilon = 1.0e-7;
 	if (actual == expected)
 		return true;
 	else if (actual == null && expected != null)
@@ -50,9 +58,9 @@ function testValue(actual, expected)
 	else if (actual == undefined && expected != undefined)
 		return false;
 	else if (expected != 0.0)
-		return Math.abs((actual - expected) / expected) < fEpsilon;
+		return Math.abs((actual - expected) / expected) < fTestEpsilon;
 	else
-		return Math.abs(actual) < fEpsilon;
+		return Math.abs(actual) < fTestEpsilon;
 }
 
 function testValueAndReport(bSilent_Pass, i_psTest, actual, expected)
