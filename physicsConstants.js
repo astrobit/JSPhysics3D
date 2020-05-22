@@ -50,7 +50,7 @@ Boltzmann constant \f$1.380649\times10^{-23}\,\mathrm{J}\,\mathrm{K}^{-1}\f$ (CO
 const kBoltzmann = 1.380649000000e-23;
 
 /**
-Boltzmann constant \f$2.99792458\times10^{8}\,\mathrm{m}ps\f$ (CODATA 2018)
+Boltzmann constant \f$2.99792458\times10^{8}\,\mathrm{m}\,\mathrm{s}^{-1}\f$ (CODATA 2018)
 */
 const kSpeedLight = 299792458.0;
 /**
